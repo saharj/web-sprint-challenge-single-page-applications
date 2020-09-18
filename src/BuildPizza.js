@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as yup from "yup";
+import formSchema from "./validate.js";
 
 const BuildPizza = (props) => {
   const [formState, setFormState] = useState({
@@ -7,7 +9,7 @@ const BuildPizza = (props) => {
     toppings: [],
     instructions: "",
   });
-  const [activeBtn, setActiveBtn] = useState(true);
+  const [activeBtn, setActiveBtn] = useState(false);
 
   const handleSubmit = () => {
     props.addToOrder(formState);
@@ -30,6 +32,30 @@ const BuildPizza = (props) => {
       setFormState({ ...formState, [target.name]: target.value });
     }
   };
+
+  useEffect(() => {
+    formSchema.isValid(formState).then((valid) => {
+      setActiveBtn(valid);
+    });
+  }, [formState]);
+
+  //   const validate = (name, value) => {
+  //     yup
+  //       .reach(formSchema, name)
+  //       .validate(value)
+  //       .then((valid) => {
+  //         setErrors({
+  //           ...errors,
+  //           [name]: "",
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         setErrors({
+  //           ...errors,
+  //           [name]: err.errors[0],
+  //         });
+  //       });
+  //   };
 
   return (
     <div>
