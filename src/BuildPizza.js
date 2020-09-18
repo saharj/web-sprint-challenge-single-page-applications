@@ -17,8 +17,6 @@ const BuildPizza = (props) => {
 
   const onInputChange = (e) => {
     const target = e.target;
-    console.log(target.name);
-    console.log(target);
     if (target.type === "checkbox") {
       if (formState.toppings.includes(target.name)) {
         // setFormState(formState.toppings.filter((item) => item !== target.name));
