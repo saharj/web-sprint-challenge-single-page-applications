@@ -11,7 +11,7 @@ describe("Input Navigation", function () {
   });
   const nameInput = () => cy.get("input[name=name]");
   const checkbox = () => cy.get("input[type=checkbox]");
-  // const submitBtn = () => cy.get(".btn");
+  const submitBtn = () => cy.get(".btn");
 
   it("nameInput works", function () {
     nameInput()
@@ -21,5 +21,10 @@ describe("Input Navigation", function () {
   });
   it("checkbox works", function () {
     checkbox().should("exist").check().should("be.checked");
+  });
+  it("user should be able to submit a form", function () {
+    nameInput().type("John Smith").should("have.value", "John Smith");
+
+    submitBtn().should("have.class", "active");
   });
 });
