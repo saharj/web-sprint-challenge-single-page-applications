@@ -1,13 +1,35 @@
 import React, { useState } from "react";
-import { Route, Link } from "react-router-dom";
 
-const BuildPizza = () => {
-  const [formState, setFormState] = useState({});
-  const [activeBtn, setActiveBtn] = useState(false);
+const BuildPizza = (props) => {
+  const [formState, setFormState] = useState({
+    name: "",
+    size: "",
+    toppings: [],
+    instructions: "",
+  });
+  const [activeBtn, setActiveBtn] = useState(true);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    props.addToOrder(formState);
+  };
 
-  const onInputChange = () => {};
+  const onInputChange = (e) => {
+    const target = e.target;
+    console.log(target.name);
+    console.log(target);
+    if (target.type === "checkbox") {
+      if (formState.toppings.includes(target.name)) {
+        // setFormState(formState.toppings.filter((item) => item !== target.name));
+      } else {
+        setFormState({
+          ...formState,
+          toppings: [...formState.toppings, target.name],
+        });
+      }
+    } else {
+      setFormState({ ...formState, [target.name]: target.value });
+    }
+  };
 
   return (
     <div>
@@ -21,14 +43,14 @@ const BuildPizza = () => {
                 type="string"
                 name="name"
                 value={formState.name}
-                placeholder="Name of the pizza"
+                placeholder="Your name"
                 onChange={onInputChange}
               />
             </label>
           </li>
           <li>
-            <label htmlFor="emailInput">Size</label>
-            <select name="pets" id="pet-select">
+            <label htmlFor="sizeSelect">Size</label>
+            <select name="size" value={formState.size} onChange={onInputChange}>
               <option value="">--Please choose a size--</option>
               <option value="small">Small</option>
               <option value="medium">Medium</option>
@@ -43,8 +65,8 @@ const BuildPizza = () => {
                   Mushroom
                   <input
                     type="checkbox"
-                    name="toppings"
-                    checked={false}
+                    name="Mushroom"
+                    checked={formState.toppings.Mushroom}
                     onChange={onInputChange}
                   />
                 </label>
@@ -54,8 +76,8 @@ const BuildPizza = () => {
                   Sausage
                   <input
                     type="checkbox"
-                    name="toppings"
-                    checked={false}
+                    name="Sausage"
+                    checked={formState.toppings.Sausage}
                     onChange={onInputChange}
                   />
                 </label>
@@ -65,20 +87,42 @@ const BuildPizza = () => {
                   Olives
                   <input
                     type="checkbox"
-                    name="toppings"
-                    checked={false}
+                    name="Olives"
+                    checked={formState.toppings.Olives}
+                    onChange={onInputChange}
+                  />
+                </label>
+              </li>
+              <li>
+                <label htmlFor="toppings">
+                  Bell pepper
+                  <input
+                    type="checkbox"
+                    name="pepper"
+                    checked={formState.toppings.pepper}
                     onChange={onInputChange}
                   />
                 </label>
               </li>
             </ul>
           </li>
+          <li>
+            <label htmlFor="instructionsInput">
+              Any special instructions?
+              <textarea
+                rows="4"
+                cols="50"
+                name="instructions"
+                onChange={onInputChange}
+              />
+            </label>
+          </li>
         </ul>
 
         <button
           className={`btn-primary btn ${activeBtn ? "active" : "disabled"}`}
         >
-          Order
+          Add to Order
         </button>
       </form>
     </div>
