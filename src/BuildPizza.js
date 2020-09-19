@@ -10,6 +10,9 @@ const BuildPizza = (props) => {
     instructions: "",
   });
   const [activeBtn, setActiveBtn] = useState(false);
+  const [errors, setErrors] = useState({
+    name: "",
+  });
 
   const handleSubmit = () => {
     props.addToOrder(formState);
@@ -17,6 +20,7 @@ const BuildPizza = (props) => {
 
   const onInputChange = (e) => {
     const target = e.target;
+    validate(target.name, target.value);
     if (target.type === "checkbox") {
       if (formState.toppings.includes(target.name)) {
         // setFormState(formState.toppings.filter((item) => item !== target.name));
@@ -37,23 +41,23 @@ const BuildPizza = (props) => {
     });
   }, [formState]);
 
-  //   const validate = (name, value) => {
-  //     yup
-  //       .reach(formSchema, name)
-  //       .validate(value)
-  //       .then((valid) => {
-  //         setErrors({
-  //           ...errors,
-  //           [name]: "",
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         setErrors({
-  //           ...errors,
-  //           [name]: err.errors[0],
-  //         });
-  //       });
-  //   };
+  const validate = (name, value) => {
+    yup
+      .reach(formSchema, name)
+      .validate(value)
+      .then((valid) => {
+        setErrors({
+          ...errors,
+          [name]: "",
+        });
+      })
+      .catch((err) => {
+        setErrors({
+          ...errors,
+          [name]: err.errors[0],
+        });
+      });
+  };
 
   return (
     <div>
@@ -149,6 +153,15 @@ const BuildPizza = (props) => {
           Add to Order
         </button>
       </form>
+      {errors && (
+        <div>
+          {errors.name.length > 0 ? (
+            <p className="error" style={{ color: "red" }}>
+              {errors.name}
+            </p>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };
